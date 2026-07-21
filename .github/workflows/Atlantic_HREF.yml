@@ -1,0 +1,51 @@
+name: Generate Atlantic HREF Plots
+
+on:
+  schedule:
+    # Runs at 03:30, 09:30, 15:30, and 21:30 UTC (3.5 hrs post 00z, 06z, 12z, 18z cycles)
+    - cron: '30 3,9,15,21 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  plot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.10
+          channels: conda-forge
+          channel-priority: strict
+
+      - name: Install dependencies
+        run: |
+          conda install -y cfgrib matplotlib cartopy requests geopandas numpy
+
+      - name: Run plot generator script
+        run: python plot_script.py
+
+      - name: Keep only the previous two model runs
+        run: |
+          mkdir -p output
+          cd output
+          # Find directories matching YYYYMMDD_CC format, sort them, and delete all except the last 2
+          ls -d [0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]_[0-9][0-9] 2>/dev/null | sort | head -n -2 | xargs -r rm -rf
+          cd ..
+
+      - name: Generate Viewer Index Page
+        run: python generate_index.py
+
+      - name: Commit and push updated plots
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/
+          git commit -m "Auto-update weather plots and viewer index" || echo "No changes to commit"
+          git push

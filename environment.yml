@@ -1,0 +1,11 @@
+name: weather-plot
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - cfgrib
+  - matplotlib
+  - cartopy
+  - requests
+  - numpy
+  - geopandas
