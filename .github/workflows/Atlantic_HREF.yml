@@ -22,6 +22,7 @@ jobs:
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
