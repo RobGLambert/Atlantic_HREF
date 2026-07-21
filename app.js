@@ -1,7 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const runSelect = document.getElementById("runSelect");
-    const plotGrid = document.getElementById("plotGrid");
+    const timelineContainer = document.getElementById("timelineContainer");
     const loading = document.getElementById("loading");
+    const viewerContainer = document.getElementById("viewerContainer");
+    
+    const activePlotImg = document.getElementById("activePlotImg");
+    const plotTitle = document.getElementById("plotTitle");
+    const plotBody = document.getElementById("plotBody");
+    
+    const categoryBtns = document.querySelectorAll(".category-btn");
     
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("modalImg");
@@ -9,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = document.querySelector(".close-modal");
 
     let globalData = null;
+    let currentCategory = "12hr"; // Default tab
+    let currentIndex = 0;
 
     fetch("output/manifest.json")
         .then(response => {
@@ -18,12 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             globalData = data;
             loading.style.display = "none";
+            viewerContainer.style.display = "block";
             
             if (!data.runs || data.runs.length === 0) {
-                plotGrid.innerHTML = "<p style='text-align:center; color: var(--text-secondary);'>No forecast runs available.</p>";
+                viewerContainer.innerHTML = "<p style='text-align:center; color: var(--text-secondary);'>No forecast runs available.</p>";
                 return;
             }
 
+            // Populate run dropdown
             data.runs.forEach(run => {
                 const option = document.createElement("option");
                 option.value = run.name;
@@ -31,16 +42,107 @@ document.addEventListener("DOMContentLoaded", () => {
                 runSelect.appendChild(option);
             });
 
-            renderPlots(data.runs[0].name);
+            updateView();
 
-            runSelect.addEventListener("change", (e) => {
-                renderPlots(e.target.value);
+            // Event Listeners
+            runSelect.addEventListener("change", () => {
+                currentIndex = 0;
+                updateView();
+            });
+
+            categoryBtns.forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    categoryBtns.forEach(b => b.classList.remove("active"));
+                    e.target.classList.add("active");
+                    currentCategory = e.target.getAttribute("data-category");
+                    currentIndex = 0;
+                    updateView();
+                });
+            });
+
+            plotBody.addEventListener("click", () => {
+                const activePlots = getActivePlots();
+                if (activePlots.length > 0 && activePlots[currentIndex]) {
+                    const plot = activePlots[currentIndex];
+                    modal.style.display = "block";
+                    modalImg.src = `output/${plot.path}`;
+                    modalCaption.textContent = `${formatRunName(runSelect.value)} — ${formatPlotTitle(plot.name)}`;
+                }
+            });
+
+            // Keyboard arrow support (Left / Right keys to step through timeline)
+            document.addEventListener("keydown", (e) => {
+                const activePlots = getActivePlots();
+                if (activePlots.length === 0) return;
+
+                if (e.key === "ArrowLeft") {
+                    currentIndex = (currentIndex - 1 + activePlots.length) % activePlots.length;
+                    updateActivePlot();
+                } else if (e.key === "ArrowRight") {
+                    currentIndex = (currentIndex + 1) % activePlots.length;
+                    updateActivePlot();
+                }
             });
         })
         .catch(error => {
             loading.textContent = "Failed to load forecast data. Please check back later.";
             console.error("Error loading manifest:", error);
         });
+
+    function getActivePlots() {
+        const runObj = globalData.runs.find(r => r.name === runSelect.value);
+        if (!runObj || !runObj.plots) return [];
+        return runObj.plots.filter(p => p.name.toLowerCase().includes(currentCategory));
+    }
+
+    function updateView() {
+        const activePlots = getActivePlots();
+        timelineContainer.innerHTML = "";
+
+        if (activePlots.length === 0) {
+            plotTitle.textContent = "No plots available for this category";
+            activePlotImg.src = "";
+            return;
+        }
+
+        if (currentIndex >= activePlots.length) {
+            currentIndex = 0;
+        }
+
+        // Build timeline steps
+        activePlots.forEach((plot, index) => {
+            const step = document.createElement("div");
+            step.className = `timeline-step ${index === currentIndex ? "active" : ""}`;
+            step.textContent = formatStepLabel(plot.name);
+            step.addEventListener("click", () => {
+                currentIndex = index;
+                updateActivePlot();
+            });
+            timelineContainer.appendChild(step);
+        });
+
+        updateActivePlot();
+    }
+
+    function updateActivePlot() {
+        const activePlots = getActivePlots();
+        if (activePlots.length === 0) return;
+
+        // Highlight correct timeline step
+        const steps = timelineContainer.querySelectorAll(".timeline-step");
+        steps.forEach((step, idx) => {
+            if (idx === currentIndex) {
+                step.classList.add("active");
+                step.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+            } else {
+                step.classList.remove("active");
+            }
+        });
+
+        const plot = activePlots[currentIndex];
+        activePlotImg.src = `output/${plot.path}`;
+        plotTitle.textContent = formatPlotTitle(plot.name);
+    }
 
     function formatRunName(name) {
         const parts = name.split("_");
@@ -52,47 +154,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return name;
     }
 
-    function renderPlots(runName) {
-        plotGrid.innerHTML = "";
-        const runObj = globalData.runs.find(r => r.name === runName);
-        if (!runObj || !runObj.plots) return;
-
-        runObj.plots.forEach(plot => {
-            const card = document.createElement("div");
-            card.className = "plot-card";
-
-            const header = document.createElement("div");
-            header.className = "plot-header";
-            header.innerHTML = `<h3>${formatPlotTitle(plot.name)}</h3>`;
-
-            const body = document.createElement("div");
-            body.className = "plot-body";
-
-            const imgPath = `output/${plot.path}`;
-            const img = document.createElement("img");
-            img.src = imgPath;
-            img.alt = plot.name;
-            img.loading = "lazy";
-
-            body.appendChild(img);
-            card.appendChild(header);
-            card.appendChild(body);
-            plotGrid.appendChild(card);
-
-            body.addEventListener("click", () => {
-                modal.style.display = "block";
-                modalImg.src = imgPath;
-                modalCaption.textContent = `${formatRunName(runName)} — ${formatPlotTitle(plot.name)}`;
-            });
-        });
+    function formatStepLabel(plotName) {
+        const clean = plotName.replace("plot_", "").toUpperCase();
+        if (clean.includes("12HR_")) {
+            return `Hours ${clean.replace("12HR_", "").replace("-", "–")}`;
+        } else if (clean.includes("24HR_")) {
+            return `Hours ${clean.replace("24HR_", "").replace("-", "–")}`;
+        }
+        return clean;
     }
 
     function formatPlotTitle(plotName) {
         const clean = plotName.replace("plot_", "").replace(".png", "").toUpperCase();
         if (clean.startsWith("12HR_")) {
-            return `12-Hour Accumulation (Hours ${clean.replace("12HR_", "")})`;
+            return `12-Hour QPF Accumulation (Forecast Hours ${clean.replace("12HR_", "").replace("-", " to ")})`;
         } else if (clean.startsWith("24HR_")) {
-            return `24-Hour Accumulation (Hours ${clean.replace("24HR_", "")})`;
+            return `24-Hour QPF Accumulation (Forecast Hours ${clean.replace("24HR_", "").replace("-", " to ")})`;
         }
         return clean;
     }
