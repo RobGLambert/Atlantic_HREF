@@ -12,15 +12,42 @@
             <h1>Atlantic Canada Weather Dashboard</h1>
             <p class="subtitle">Automated HREF LPMM Precipitation Accumulations & ECCC Forecast Zones</p>
         </div>
-        <div class="run-selector-container">
-            <label for="runSelect">Model Run:</label>
-            <select id="runSelect"></select>
+        <div class="header-controls">
+            <div class="control-group">
+                <label for="runSelect">Model Run:</label>
+                <select id="runSelect"></select>
+            </div>
         </div>
     </header>
 
+    <!-- Category Switcher (12hr vs 24hr) -->
+    <nav class="category-nav">
+        <button class="category-btn active" data-category="12hr">12-Hour Accumulations</button>
+        <button class="category-btn" data-category="24hr">24-Hour Accumulations</button>
+    </nav>
+
+    <!-- Horizontal Timeline Scroller -->
+    <section class="timeline-section">
+        <div class="timeline-label">Forecast Window:</div>
+        <div class="timeline-container" id="timelineContainer">
+            <!-- Timeline steps populated dynamically -->
+        </div>
+    </section>
+
+    <!-- Main Plot Viewer -->
     <main class="dashboard-main">
         <div id="loading" class="loading">Loading forecast data...</div>
-        <section id="plotGrid" class="plot-grid"></section>
+        <div id="viewerContainer" class="viewer-container" style="display: none;">
+            <div class="plot-card">
+                <div class="plot-header">
+                    <h3 id="plotTitle">Select a forecast window</h3>
+                    <span class="keyboard-hint">Tip: Use ◄ ► arrow keys to step through</span>
+                </div>
+                <div class="plot-body" id="plotBody">
+                    <img id="activePlotImg" src="" alt="Forecast Plot">
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Modal for full-size image preview -->
