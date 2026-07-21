@@ -27,7 +27,7 @@ jobs:
           cache-downloads: true
 
       - name: Run plot generator script
-        run: conda run -n weather-plot python plot_script.py
+        run: python plot_script.py
 
       - name: Keep only the previous two model runs
         run: |
@@ -37,7 +37,7 @@ jobs:
           cd ..
 
       - name: Generate Viewer Index Page
-        run: conda run -n weather-plot python generate_index.py
+        run: python generate_index.py
 
       - name: Commit and push updated plots
         run: |
