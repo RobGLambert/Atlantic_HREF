@@ -12,29 +12,19 @@ permissions:
 jobs:
   plot:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}  # Automatically activates the environment
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache Conda Environment
-        id: cache-conda
-        uses: actions/cache@v4
+      - name: Set up Micromamba with Caching
+        uses: mamba-org/setup-micromamba@v1
         with:
-          path: /usr/share/miniconda/envs/weather-plot
-          key: conda-env-${{ runner.os }}-${{ hashFiles('environment.yml') }}
-          restore-keys: |
-            conda-env-${{ runner.os }}-
-
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          activate-environment: weather-plot
-          auto-activate-base: false
-
-      - name: Create Environment if Cache Miss
-        if: steps.cache-conda.outputs.cache-hit != 'true'
-        run: conda env create -f environment.yml
+          environment-file: environment.yml
+          cache-env: true
+          cache-downloads: true
 
       - name: Run plot generator script
         run: conda run -n weather-plot python plot_script.py
