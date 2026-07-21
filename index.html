@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlantic Canada HREF & ECCC Forecast Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <h1>Atlantic Canada Weather Dashboard</h1>
+            <p class="subtitle">Automated HREF LPMM Precipitation Accumulations & ECCC Forecast Zones</p>
+        </div>
+        <div class="run-selector-container">
+            <label for="runSelect">Model Run:</label>
+            <select id="runSelect"></select>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div id="loading" class="loading">Loading forecast data...</div>
+        <section id="plotGrid" class="plot-grid"></section>
+    </main>
+
+    <!-- Modal for full-size image preview -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="modalCaption"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
