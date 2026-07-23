@@ -1,6 +1,39 @@
 {
   "runs": [
     {
+      "name": "20260723_18",
+      "plots": [
+        {
+          "name": "plot_12hr_01-12",
+          "path": "20260723_18/plot_12hr_01-12.png"
+        },
+        {
+          "name": "plot_12hr_12-24",
+          "path": "20260723_18/plot_12hr_12-24.png"
+        },
+        {
+          "name": "plot_12hr_24-36",
+          "path": "20260723_18/plot_12hr_24-36.png"
+        },
+        {
+          "name": "plot_12hr_36-48",
+          "path": "20260723_18/plot_12hr_36-48.png"
+        },
+        {
+          "name": "plot_24hr_01-24",
+          "path": "20260723_18/plot_24hr_01-24.png"
+        },
+        {
+          "name": "plot_24hr_12-36",
+          "path": "20260723_18/plot_24hr_12-36.png"
+        },
+        {
+          "name": "plot_24hr_24-48",
+          "path": "20260723_18/plot_24hr_24-48.png"
+        }
+      ]
+    },
+    {
       "name": "20260723_12",
       "plots": [
         {
@@ -30,39 +63,6 @@
         {
           "name": "plot_24hr_24-48",
           "path": "20260723_12/plot_24hr_24-48.png"
-        }
-      ]
-    },
-    {
-      "name": "20260723_06",
-      "plots": [
-        {
-          "name": "plot_12hr_01-12",
-          "path": "20260723_06/plot_12hr_01-12.png"
-        },
-        {
-          "name": "plot_12hr_12-24",
-          "path": "20260723_06/plot_12hr_12-24.png"
-        },
-        {
-          "name": "plot_12hr_24-36",
-          "path": "20260723_06/plot_12hr_24-36.png"
-        },
-        {
-          "name": "plot_12hr_36-48",
-          "path": "20260723_06/plot_12hr_36-48.png"
-        },
-        {
-          "name": "plot_24hr_01-24",
-          "path": "20260723_06/plot_24hr_01-24.png"
-        },
-        {
-          "name": "plot_24hr_12-36",
-          "path": "20260723_06/plot_24hr_12-36.png"
-        },
-        {
-          "name": "plot_24hr_24-48",
-          "path": "20260723_06/plot_24hr_24-48.png"
         }
       ]
     }
