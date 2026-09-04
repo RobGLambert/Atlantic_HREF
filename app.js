@@ -160,6 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return `Hours ${clean.replace("12HR_", "").replace("-", "–")}`;
         } else if (clean.includes("24HR_")) {
             return `Hours ${clean.replace("24HR_", "").replace("-", "–")}`;
+        } else if (clean.includes("48HR_")) {
+            return `Hours ${clean.replace("48HR_", "").replace("_", "–")}`;
         }
         return clean;
     }
@@ -170,6 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return `12-Hour QPF Accumulation (Forecast Hours ${clean.replace("12HR_", "").replace("-", " to ")})`;
         } else if (clean.startsWith("24HR_")) {
             return `24-Hour QPF Accumulation (Forecast Hours ${clean.replace("24HR_", "").replace("-", " to ")})`;
+        } else if (clean.startsWith("48HR_")) {
+            return `48-Hour QPF Accumulation (Forecast Hours ${clean.replace("48HR_", "").replace("_", " to ")})`;
         }
         return clean;
     }
