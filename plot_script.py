@@ -26,6 +26,7 @@ windows_to_plot = [
     {"name": "24hr_01-24", "start": 1, "end": 24},
     {"name": "24hr_12-36", "start": 13, "end": 36},
     {"name": "24hr_24-48", "start": 25, "end": 48},
+    {"name": "48hr_01_48", "start": 1,  "end":48}
 ]
 
 # Metric SPC-Style Colormap Configuration (up to 150mm)
@@ -45,9 +46,11 @@ spc_colors = [
     "#ff4500",
     "#ff8c00",
     "#ffd700",
-    "#ffc0cb",
+    "#FFFF00",  # Yellow for the 150-200mm bin
+    "#ffc0cb",  # Pink for the 200-250mm bin
+    "#000000",  # Black for the 250mm+ bin
 ]
-bounds = [0.2, 2, 5, 10, 15, 20, 25, 35, 45, 55, 65, 75, 90, 100, 125, 150]
+bounds = [0.2, 2, 5, 10, 15, 20, 25, 35, 45, 55, 65, 75, 90, 100, 125, 150, 200, 250, 300]
 
 cmap = mcolors.ListedColormap(spc_colors)
 cmap.set_under("none")
