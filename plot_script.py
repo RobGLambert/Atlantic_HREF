@@ -20,13 +20,16 @@ print(f"Targeting Model Run: {date_str} {cycle}z")
 # Define all the 12-hr and 24-hr windows you want to generate plots for
 windows_to_plot = [
     {"name": "12hr_01-12", "start": 1, "end": 12},
-    {"name": "12hr_12-24", "start": 13, "end": 24},
-    {"name": "12hr_24-36", "start": 25, "end": 36},
-    {"name": "12hr_36-48", "start": 37, "end": 48},
+    {"name": "12hr_12-24", "start": 12, "end": 24},
+    {"name": "12hr_24-36", "start": 24, "end": 36},
+    {"name": "12hr_36-48", "start": 36, "end": 48},
+    {"name": "12hr_48-60", "start": 48, "end": 60},
     {"name": "24hr_01-24", "start": 1, "end": 24},
-    {"name": "24hr_12-36", "start": 13, "end": 36},
-    {"name": "24hr_24-48", "start": 25, "end": 48},
-    {"name": "48hr_01_48", "start": 1,  "end":48}
+    {"name": "24hr_12-36", "start": 12, "end": 36},
+    {"name": "24hr_24-48", "start": 24, "end": 48},
+    {"name": "24hr_36-60", "start": 36, "end": 60},
+    {"name": "48hr_01_48", "start": 1,  "end": 48},
+    {"name": "48hr_12_60", "start": 12, "end": 60}
 ]
 
 # Metric SPC-Style Colormap Configuration (up to 150mm)
@@ -87,7 +90,7 @@ for win in windows_to_plot:
 
   for f in range(start_f, end_f + 1):
     f_str = f"f{f:02d}"
-    idx_url = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/href/prod/href.{date_str}/ensprod/href.t{cycle}z.conus.lpmm.{f_str}.grib2.idx"
+    idx_url = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/href/prod/refs.{date_str}/{cycle}/ensprod/refs.t{cycle}z.lpmm.{f_str}.grib2.idx"
     grib_url = idx_url.rsplit(".", 1)[0]
     target_query = f"{f-1}-{f} hour acc fcst"
 
