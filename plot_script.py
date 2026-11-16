@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-HREF LPMM QPF plots over the Maritimes with ECCC forecast zones overlaid.
+RREF LPMM QPF plots over the Maritimes with ECCC forecast zones overlaid.
 
 Design:
-  * Find the latest HREF run that is actually complete on NOMADS (no guessing a lag).
+  * Find the latest RREF run that is actually complete on NOMADS (no guessing a lag).
   * Download each forecast hour ONCE, validate it, retry on failure, cache it on disk.
   * Build every accumulation window by summing cached hourly arrays.
   * Skip (and say so) any window with a missing hour instead of plotting a partial sum.
 
 Usage:
-    python href_qpf_plots.py                 # latest complete run
-    python href_qpf_plots.py --run 2026111606  # a specific run (YYYYMMDDHH)
+    python RREF_qpf_plots.py                 # latest complete run
+    python RREF_qpf_plots.py --run 2026111606  # a specific run (YYYYMMDDHH)
 """
 from __future__ import annotations
 
@@ -98,14 +98,14 @@ def find_latest_run(session: requests.Session) -> tuple[str, str]:
             print("complete.")
             return date_str, cycle
         print("not ready.")
-    raise RuntimeError("No complete HREF run found in the lookback window.")
+    raise RuntimeError("No complete RREF run found in the lookback window.")
 
 
 # --------------------------------------------------------------------------- #
 # Hourly data fetching (download once, validate, retry, cache)
 # --------------------------------------------------------------------------- #
 class HourlyQPF:
-    """Fetches 1-hour APCP for one HREF run and caches each hour as a .npy file."""
+    """Fetches 1-hour APCP for one RREF run and caches each hour as a .npy file."""
 
     def __init__(self, session: requests.Session, date_str: str, cycle: str):
         self.session = session
@@ -243,7 +243,7 @@ def make_plot(lons, lats, data, zones_gdf, span, first_f, end_f, cycle, out_path
     cbar.ax.set_xticklabels([str(b) for b in BOUNDS], fontsize=7)
 
     plt.title(
-        f"HREF LPMM - {span}-Hour Total Precipitation & ECCC Zones "
+        f"RREF LPMM - {span}-Hour Total Precipitation & ECCC Zones "
         f"(Run: {cycle}z | f{first_f:02d}-f{end_f:02d})",
         fontsize=11,
     )
