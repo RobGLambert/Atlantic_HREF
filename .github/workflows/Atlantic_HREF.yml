@@ -2,19 +2,23 @@ name: Generate HREF Weather Plots
 
 on:
   schedule:
-    # Runs at 03:30, 09:30, 15:30, and 21:30 UTC
     - cron: '30 3,9,15,21 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:               # never let two runs push at once
+  group: href-plots
+  cancel-in-progress: false
+
 jobs:
   plot:
     runs-on: ubuntu-latest
+    timeout-minutes: 30    # a throttled NOMADS shouldn't hang the job forever
     defaults:
       run:
-        shell: bash -l {0}  # Automatically activates the environment
+        shell: bash -l {0}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,8 +30,14 @@ jobs:
           cache-env: true
           cache-downloads: true
 
+      - name: Cache Cartopy map data     # optional: avoids re-downloading coastlines
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/cartopy
+          key: cartopy-natural-earth
+
       - name: Run plot generator script
-        run: python plot_script.py
+        run: python plot_script.py        # or href_qpf_plots.py
 
       - name: Keep only the previous two model runs
         run: |
@@ -45,4 +55,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add output/
           git commit -m "Auto-update weather plots and viewer index" || echo "No changes to commit"
+          git pull --rebase
           git push
