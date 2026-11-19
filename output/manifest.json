@@ -1,6 +1,55 @@
 {
   "runs": [
     {
+      "name": "20261119_18",
+      "plots": [
+        {
+          "name": "plot_12hr_f01-f12",
+          "path": "20261119_18/plot_12hr_f01-f12.png"
+        },
+        {
+          "name": "plot_12hr_f13-f24",
+          "path": "20261119_18/plot_12hr_f13-f24.png"
+        },
+        {
+          "name": "plot_12hr_f25-f36",
+          "path": "20261119_18/plot_12hr_f25-f36.png"
+        },
+        {
+          "name": "plot_12hr_f37-f48",
+          "path": "20261119_18/plot_12hr_f37-f48.png"
+        },
+        {
+          "name": "plot_12hr_f49-f60",
+          "path": "20261119_18/plot_12hr_f49-f60.png"
+        },
+        {
+          "name": "plot_24hr_f01-f24",
+          "path": "20261119_18/plot_24hr_f01-f24.png"
+        },
+        {
+          "name": "plot_24hr_f13-f36",
+          "path": "20261119_18/plot_24hr_f13-f36.png"
+        },
+        {
+          "name": "plot_24hr_f25-f48",
+          "path": "20261119_18/plot_24hr_f25-f48.png"
+        },
+        {
+          "name": "plot_24hr_f37-f60",
+          "path": "20261119_18/plot_24hr_f37-f60.png"
+        },
+        {
+          "name": "plot_48hr_f01-f48",
+          "path": "20261119_18/plot_48hr_f01-f48.png"
+        },
+        {
+          "name": "plot_48hr_f13-f60",
+          "path": "20261119_18/plot_48hr_f13-f60.png"
+        }
+      ]
+    },
+    {
       "name": "20261119_06",
       "plots": [
         {
@@ -46,55 +95,6 @@
         {
           "name": "plot_48hr_f13-f60",
           "path": "20261119_06/plot_48hr_f13-f60.png"
-        }
-      ]
-    },
-    {
-      "name": "20261118_18",
-      "plots": [
-        {
-          "name": "plot_12hr_f01-f12",
-          "path": "20261118_18/plot_12hr_f01-f12.png"
-        },
-        {
-          "name": "plot_12hr_f13-f24",
-          "path": "20261118_18/plot_12hr_f13-f24.png"
-        },
-        {
-          "name": "plot_12hr_f25-f36",
-          "path": "20261118_18/plot_12hr_f25-f36.png"
-        },
-        {
-          "name": "plot_12hr_f37-f48",
-          "path": "20261118_18/plot_12hr_f37-f48.png"
-        },
-        {
-          "name": "plot_12hr_f49-f60",
-          "path": "20261118_18/plot_12hr_f49-f60.png"
-        },
-        {
-          "name": "plot_24hr_f01-f24",
-          "path": "20261118_18/plot_24hr_f01-f24.png"
-        },
-        {
-          "name": "plot_24hr_f13-f36",
-          "path": "20261118_18/plot_24hr_f13-f36.png"
-        },
-        {
-          "name": "plot_24hr_f25-f48",
-          "path": "20261118_18/plot_24hr_f25-f48.png"
-        },
-        {
-          "name": "plot_24hr_f37-f60",
-          "path": "20261118_18/plot_24hr_f37-f60.png"
-        },
-        {
-          "name": "plot_48hr_f01-f48",
-          "path": "20261118_18/plot_48hr_f01-f48.png"
-        },
-        {
-          "name": "plot_48hr_f13-f60",
-          "path": "20261118_18/plot_48hr_f13-f60.png"
         }
       ]
     }
